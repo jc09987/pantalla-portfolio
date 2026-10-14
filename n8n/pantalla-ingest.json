@@ -1,0 +1,89 @@
+{
+  "name": "Pantalla · inbound to ingest",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "pantalla-inbound",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "id": "inbound",
+      "name": "Inbound",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [0, 0],
+      "webhookId": "pantalla-inbound"
+    },
+    {
+      "parameters": {
+        "jsCode": "const crypto = require('crypto');\nconst incoming = $input.first().json;\nconst body = {\n  storeSlug: incoming.storeSlug || 'la-michoacana',\n  channel: incoming.channel === 'email' ? 'email' : 'whatsapp',\n  from: incoming.from || incoming.From || '',\n  text: incoming.text || incoming.Body || '',\n  mediaBase64: incoming.mediaBase64,\n  mediaMime: incoming.mediaMime,\n};\nconst raw = JSON.stringify(body);\nconst secret = $env.N8N_WEBHOOK_SECRET;\nif (!secret) {\n  throw new Error('Set N8N_WEBHOOK_SECRET in the n8n environment');\n}\nconst signature = crypto.createHmac('sha256', secret).update(raw).digest('hex');\nconst base = ($env.PANTALLA_URL || 'http://localhost:3000').replace(/\\/$/, '');\nreturn [{\n  json: {\n    raw,\n    signature,\n    url: `${base}/api/n8n/ingest`,\n  },\n}];"
+      },
+      "id": "sign",
+      "name": "Sign raw body",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [240, 0]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $json.url }}",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "content-type",
+              "value": "application/json"
+            },
+            {
+              "name": "x-n8n-signature",
+              "value": "={{ $json.signature }}"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "raw",
+        "rawContentType": "application/json",
+        "body": "={{ $json.raw }}",
+        "options": {
+          "response": {
+            "neverError": true
+          }
+        }
+      },
+      "id": "ingest",
+      "name": "POST ingest",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [480, 0]
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ JSON.stringify({ reply: $json.reply, ok: $json.ok, status: $json.status }) }}",
+        "options": {}
+      },
+      "id": "respond",
+      "name": "Reply to channel",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [720, 0]
+    }
+  ],
+  "connections": {
+    "Inbound": {
+      "main": [[{ "node": "Sign raw body", "type": "main", "index": 0 }]]
+    },
+    "Sign raw body": {
+      "main": [[{ "node": "POST ingest", "type": "main", "index": 0 }]]
+    },
+    "POST ingest": {
+      "main": [[{ "node": "Reply to channel", "type": "main", "index": 0 }]]
+    }
+  },
+  "active": false,
+  "settings": { "executionOrder": "v1" },
+  "meta": { "templateCredsSetupCompleted": true },
+  "tags": []
+}

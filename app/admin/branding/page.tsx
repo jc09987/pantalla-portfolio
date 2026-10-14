@@ -1,0 +1,37 @@
+import { AdminHeader } from "@/app/admin/AdminHeader";
+import { BrandingStudio } from "@/app/admin/branding/BrandingStudio";
+import { redirectIfCatalogBlocked } from "@/lib/admin/guard";
+import { loadAdminCatalog } from "@/lib/menu/catalog";
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Marca · Pantalla",
+};
+
+export const dynamic = "force-dynamic";
+
+export default async function BrandingPage() {
+  const loaded = await loadAdminCatalog();
+  redirectIfCatalogBlocked(loaded);
+
+  return (
+    <div className="min-h-full">
+      <AdminHeader
+        email={loaded.ok ? loaded.catalog.email : ""}
+        current="branding"
+        store={loaded.ok ? loaded.catalog.store : undefined}
+        stores={loaded.ok ? loaded.catalog.stores : []}
+      />
+      {loaded.ok ? (
+        <BrandingStudio
+          catalog={loaded.catalog}
+          blobConfigured={Boolean(process.env.BLOB_READ_WRITE_TOKEN)}
+        />
+      ) : (
+        <p className="mx-auto max-w-xl px-6 py-16 text-sm font-semibold text-amber-800">
+          {loaded.error}
+        </p>
+      )}
+    </div>
+  );
+}

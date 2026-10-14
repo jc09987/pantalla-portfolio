@@ -1,0 +1,194 @@
+[
+  {
+    "id": "01",
+    "text": "ya no hay del de mango de leche",
+    "note": "messy availability",
+    "expect": { "type": "set_available", "query": "mango", "kind": "leche", "available": false }
+  },
+  {
+    "id": "02",
+    "text": "Transcripción: bueno, este, ya no hay mango de leche, eh, ¿me oyes?",
+    "note": "voice-note transcript",
+    "expect": { "type": "set_available", "query": "mango", "kind": "leche", "available": false }
+  },
+  {
+    "id": "03",
+    "text": "se acabó la fresa de agua, me avisan",
+    "note": "availability buried in a sentence",
+    "expect": { "type": "set_available", "query": "fresa", "kind": "agua", "available": false }
+  },
+  {
+    "id": "04",
+    "text": "oye el limón de agua ya no queda",
+    "note": "accent and word order",
+    "expect": { "type": "set_available", "query": "limon", "kind": "agua", "available": false }
+  },
+  {
+    "id": "05",
+    "text": "pon otra vez el pistache, ya llegó",
+    "note": "restock, no grammar prefix",
+    "expect": { "type": "set_available", "query": "pistache", "available": true }
+  },
+  {
+    "id": "06",
+    "text": "ya volvió la guanábana",
+    "note": "restock",
+    "expect": { "type": "set_available", "query": "guanabana", "available": true }
+  },
+  {
+    "id": "07",
+    "text": "el de coco, el de leche, agotado por favor",
+    "note": "kind after the name",
+    "expect": { "type": "set_available", "query": "coco", "kind": "leche", "available": false }
+  },
+  {
+    "id": "08",
+    "text": "marca el tamarindo como agotado, gracias",
+    "note": "polite aside",
+    "expect": { "type": "set_available", "query": "tamarindo", "available": false }
+  },
+  {
+    "id": "09",
+    "text": "la sandía ya la tenemos, ponla en el tablero",
+    "note": "restock",
+    "expect": { "type": "set_available", "query": "sandia", "available": true }
+  },
+  {
+    "id": "10",
+    "text": "se me acabó el nance hace rato",
+    "note": "past tense",
+    "expect": { "type": "set_available", "query": "nance", "available": false }
+  },
+  {
+    "id": "11",
+    "text": "precio de dos bolas a 4 pesos con cincuenta",
+    "note": "spoken price",
+    "expect": { "type": "set_price", "scoopCount": 2, "price": 4.5 }
+  },
+  {
+    "id": "12",
+    "text": "las tres bolas quedan en 6",
+    "note": "price without the precio prefix",
+    "expect": { "type": "set_price", "scoopCount": 3, "price": 6 }
+  },
+  {
+    "id": "13",
+    "text": "súbele a la de una bola, que quede en 3",
+    "note": "spoken price",
+    "expect": { "type": "set_price", "scoopCount": 1, "price": 3 }
+  },
+  {
+    "id": "14",
+    "text": "dos bolas $4.50 pesos",
+    "note": "currency sign",
+    "expect": { "type": "set_price", "scoopCount": 2, "price": 4.5 }
+  },
+  {
+    "id": "15",
+    "text": "agrega un sabor de leche que se llama horchata",
+    "note": "add item in a sentence",
+    "expect": { "type": "add_item", "name": "Horchata", "kind": "leche" }
+  },
+  {
+    "id": "16",
+    "text": "hay un sabor nuevo de agua, se llama tuna",
+    "note": "add item",
+    "expect": { "type": "add_item", "name": "Tuna", "kind": "agua" }
+  },
+  {
+    "id": "17",
+    "text": "mete el sabor de leche arroz imperial",
+    "note": "add item",
+    "expect": { "type": "add_item", "name": "Arroz imperial", "kind": "leche" }
+  },
+  {
+    "id": "18",
+    "text": "quita el gansito del tablero",
+    "note": "hide with extra words",
+    "expect": { "type": "hide_item", "query": "gansito" }
+  },
+  {
+    "id": "19",
+    "text": "oculta el mazapán, ya no lo vendemos",
+    "note": "hide",
+    "expect": { "type": "hide_item", "query": "mazapan" }
+  },
+  {
+    "id": "20",
+    "text": "nomas quita el chicle, no preguntes",
+    "note": "hide",
+    "expect": { "type": "hide_item", "query": "chicle" }
+  },
+  {
+    "id": "21",
+    "text": "foto del de chocolate",
+    "note": "photo, no image bytes",
+    "expect": { "type": "set_photo", "query": "chocolate" }
+  },
+  {
+    "id": "22",
+    "text": "te mando la imagen de la nieve de pistache",
+    "note": "photo",
+    "expect": { "type": "set_photo", "query": "pistache" }
+  },
+  {
+    "id": "23",
+    "text": "el pay de limón, foto, es el de leche",
+    "note": "photo with kind",
+    "expect": { "type": "set_photo", "query": "pay de limon", "kind": "leche" }
+  },
+  {
+    "id": "24",
+    "text": "(foto adjunta, sin texto)",
+    "note": "photo with no caption",
+    "expect": { "type": "unknown" }
+  },
+  {
+    "id": "25",
+    "text": "a ver ayuda, no me acuerdo cómo se escribe",
+    "note": "help buried in a sentence",
+    "expect": { "type": "help" }
+  },
+  {
+    "id": "26",
+    "text": "¿cuáles son los comandos?",
+    "note": "help",
+    "expect": { "type": "help" }
+  },
+  {
+    "id": "27",
+    "text": "hola buenos días, ¿cuánto cuesta el estacionamiento?",
+    "note": "not a menu command",
+    "expect": { "type": "unknown" }
+  },
+  {
+    "id": "28",
+    "text": "manda un correo a todos los clientes con un cupón",
+    "note": "outside the union",
+    "expect": { "type": "unknown" }
+  },
+  {
+    "id": "29",
+    "text": "borra todo el menú y pon solo vainilla",
+    "note": "outside the union",
+    "expect": { "type": "unknown" }
+  },
+  {
+    "id": "30",
+    "text": "cambia el color de la tele a rojo",
+    "note": "outside the union",
+    "expect": { "type": "unknown" }
+  },
+  {
+    "id": "31",
+    "text": "no sé qué poner aquí jaja",
+    "note": "unknown",
+    "expect": { "type": "unknown" }
+  },
+  {
+    "id": "32",
+    "text": "el de mango de leche ya no hay, el de agua sí",
+    "note": "one flavor, one kind",
+    "expect": { "type": "set_available", "query": "mango", "kind": "leche", "available": false }
+  }
+]

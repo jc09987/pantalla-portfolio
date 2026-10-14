@@ -1,0 +1,501 @@
+@import "tailwindcss";
+
+:root {
+  --background: #000000;
+  --foreground: #2a1548;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-body);
+  --font-display: var(--font-display);
+  --font-script: var(--font-script);
+  --font-body: var(--font-body);
+}
+
+html,
+body {
+  min-height: 100%;
+  margin: 0;
+  background: #000;
+  color: var(--foreground);
+  font-family: var(--font-body), "Nunito", sans-serif;
+}
+
+html.pantalla-fit,
+html.pantalla-fit body {
+  height: 100%;
+  max-height: 100%;
+  overflow: hidden;
+  overscroll-behavior: none;
+}
+
+.admin-shell {
+  background: #f4f4f5;
+  color: #18181b;
+}
+
+.font-display {
+  font-family: var(--font-display), "Lilita One", Impact, sans-serif;
+}
+
+.font-script {
+  font-family: var(--font-script), "Pacifico", cursive;
+}
+
+.pantalla-letterbox {
+  position: fixed;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  background: #000;
+}
+
+.pantalla-stage-slot {
+  position: relative;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+.pantalla-stage {
+  position: absolute;
+  top: 0;
+  left: 0;
+  transform-origin: top left;
+}
+
+.pantalla-kiosk {
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.pantalla-cursor-hidden,
+.pantalla-cursor-hidden * {
+  cursor: none !important;
+}
+
+.confetti {
+  position: absolute;
+  border-radius: 9999px;
+  background: var(--micho-pink, #e91e8c);
+  opacity: 0.85;
+}
+
+.confetti-a {
+  width: 10px;
+  height: 10px;
+  left: 210px;
+  top: 28px;
+}
+.confetti-b {
+  width: 8px;
+  height: 8px;
+  left: 720px;
+  top: 22px;
+}
+.confetti-c {
+  width: 12px;
+  height: 12px;
+  left: 430px;
+  top: 168px;
+}
+.confetti-d {
+  width: 7px;
+  height: 7px;
+  left: 780px;
+  top: 150px;
+}
+
+@keyframes pantalla-float {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+@keyframes pantalla-fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes pantalla-pulse-soft {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.04);
+  }
+}
+
+@keyframes pantalla-splash {
+  0%,
+  100% {
+    transform: scaleX(1) scaleY(1);
+  }
+  50% {
+    transform: scaleX(1.045) scaleY(0.94);
+  }
+}
+
+@keyframes pantalla-cascade {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.anim-float {
+  animation: pantalla-float 4.2s ease-in-out infinite;
+}
+
+.anim-fade-up {
+  animation: pantalla-fade-up 0.7s ease-out both;
+}
+
+.anim-pulse-soft {
+  animation: pantalla-pulse-soft 2.8s ease-in-out infinite;
+}
+
+.anim-splash {
+  transform-origin: bottom center;
+  animation: pantalla-splash 3.4s ease-in-out infinite;
+}
+
+.anim-cascade {
+  animation: pantalla-cascade 0.55s ease-out both;
+}
+
+@keyframes pantalla-ken-burns {
+  from {
+    transform: scale(1);
+  }
+  to {
+    transform: scale(1.12);
+  }
+}
+
+.anim-ken-burns {
+  animation: pantalla-ken-burns 18s ease-in-out infinite alternate;
+}
+
+@keyframes pantalla-ticker {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+.promo-ticker-track {
+  display: flex;
+  flex: none;
+  align-items: center;
+  width: max-content;
+  height: 72px;
+  white-space: nowrap;
+  will-change: transform;
+  animation: pantalla-ticker 32s linear infinite;
+}
+
+.promo-ticker-track > * {
+  flex: none;
+}
+
+.live-menu {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+.live-layer {
+  position: absolute;
+  inset: 0;
+}
+
+.live-layer-in {
+  opacity: 0;
+}
+
+.live-layer-in.is-on {
+  opacity: 1;
+  transition: opacity 420ms ease;
+}
+
+.live-offline {
+  position: absolute;
+  right: 24px;
+  bottom: 108px;
+  z-index: 5;
+  margin: 0;
+  border-radius: 999px;
+  background: #2a1548;
+  color: #fff;
+  font-size: 18px;
+  font-weight: 800;
+  padding: 8px 16px;
+}
+
+@keyframes cycle-copy-in {
+  from {
+    opacity: 0;
+    transform: translateY(28px);
+    filter: blur(6px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+    filter: none;
+  }
+}
+
+@keyframes cycle-copy-out {
+  from {
+    opacity: 1;
+    transform: none;
+    filter: none;
+  }
+  to {
+    opacity: 0;
+    transform: translateY(-22px);
+    filter: blur(8px);
+  }
+}
+
+@keyframes cycle-media-in {
+  from {
+    opacity: 0;
+    transform: scale(1.12);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes cycle-media-out {
+  from {
+    opacity: 1;
+    transform: scale(1);
+  }
+  to {
+    opacity: 0;
+    transform: scale(1.08);
+  }
+}
+
+.cycle-copy {
+  display: inline-block;
+}
+
+.cycle-copy-in {
+  animation: cycle-copy-in 0.72s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.cycle-copy-out {
+  animation: cycle-copy-out 0.6s ease-in both;
+}
+
+.cycle-media {
+  animation-fill-mode: both;
+}
+
+.cycle-media-in {
+  animation: cycle-media-in 0.8s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.cycle-media-out {
+  animation: cycle-media-out 0.6s ease-in both;
+}
+
+.product-media {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+  height: 100%;
+  width: 100%;
+}
+
+.product-media-frame {
+  position: absolute;
+  inset: 0;
+}
+
+.product-media-frame img {
+  height: 100%;
+  width: 100%;
+}
+
+.product-media-dots {
+  position: absolute;
+  right: 12px;
+  bottom: 10px;
+  z-index: 2;
+  display: flex;
+  gap: 6px;
+}
+
+.product-media-dots span {
+  display: block;
+  width: 8px;
+  height: 8px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.4);
+}
+
+.product-media-dots span.is-on {
+  background: #fff;
+}
+
+.product-media-compact .product-media-dots {
+  display: none;
+}
+
+.product-media-mosaic .product-media-dots {
+  top: 14px;
+  right: 14px;
+  bottom: auto;
+}
+
+.landing-shell {
+  min-height: 100%;
+  background: #fff7fb;
+  color: #2a1548;
+}
+
+.landing-nav {
+  position: sticky;
+  top: 0;
+  z-index: 40;
+  border-bottom: 1px solid rgba(233, 30, 140, 0.12);
+  background: rgba(255, 247, 251, 0.88);
+  backdrop-filter: blur(12px);
+}
+
+
+.field-unpublished {
+  outline: 2px solid #dc2626;
+  outline-offset: 1px;
+  border-color: #fca5a5 !important;
+}
+
+@keyframes admin-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes admin-progress {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(280%);
+  }
+}
+
+.admin-spinner {
+  display: inline-block;
+  width: 22px;
+  height: 22px;
+  border: 3px solid #e4e4e7;
+  border-top-color: #db2777;
+  border-radius: 999px;
+  animation: admin-spin 0.7s linear infinite;
+}
+
+.admin-spinner-sm {
+  width: 16px;
+  height: 16px;
+  border-width: 2px;
+}
+
+.admin-spinner-lg {
+  width: 36px;
+  height: 36px;
+  border-width: 4px;
+}
+
+.admin-page-progress {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 80;
+  height: 3px;
+  overflow: hidden;
+  background: #fce7f3;
+}
+
+.admin-page-progress::after {
+  content: "";
+  display: block;
+  height: 100%;
+  width: 40%;
+  background: #db2777;
+  animation: admin-progress 1s ease-in-out infinite;
+}
+
+.admin-busy-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 20;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6rem;
+  border-radius: inherit;
+  background: rgba(255, 255, 255, 0.72);
+  backdrop-filter: blur(2px);
+  color: #3f3f46;
+  font-size: 0.8rem;
+  font-weight: 700;
+}
+
+.admin-busy-overlay-page {
+  position: fixed;
+  inset: 0;
+  z-index: 70;
+  border-radius: 0;
+  background: rgba(244, 244, 245, 0.72);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .anim-float,
+  .anim-pulse-soft,
+  .anim-splash,
+  .anim-fade-up,
+  .anim-cascade,
+  .anim-ken-burns,
+  .promo-ticker-track,
+  .cycle-copy-in,
+  .cycle-copy-out,
+  .cycle-media-in,
+  .cycle-media-out,
+  .admin-spinner,
+  .admin-page-progress::after,
+  .landing-marquee-track {
+    animation: none;
+  }
+
+  .live-layer-in.is-on {
+    transition: none;
+  }
+}
