@@ -1,7 +1,7 @@
 {
-  "ranAt": "2026-10-14T21:27:16.436Z",
-  "model": null,
-  "note": "OPENAI_API_KEY was not set, so every row is the regex fallback. model, latencyMs, and costUsd stay null until npm run eval with a key.",
+  "ranAt": "2026-10-14T21:33:08.158Z",
+  "model": "gpt-4o-mini",
+  "note": "gpt-4o-mini failed for every message: You have no credits remaining. Add credits to continue using the API at https://platform.openai.com/settings/organization/billing/. Every row is the regex fallback. latencyMs is the failed request. costUsd stays null because no tokens were billed.",
   "summary": {
     "total": 32,
     "pass": 6,
@@ -60,10 +60,11 @@
       "actual": {
         "type": "unknown"
       },
-      "model": null,
-      "modelOutcome": "skipped",
-      "latencyMs": null,
-      "costUsd": null
+      "model": "gpt-4o-mini",
+      "modelOutcome": "error",
+      "latencyMs": 443,
+      "costUsd": null,
+      "error": "You have no credits remaining. Add credits to continue using the API at https://platform.openai.com/settings/organization/billing/."
     },
     {
       "id": "02",
@@ -80,10 +81,11 @@
       "actual": {
         "type": "unknown"
       },
-      "model": null,
-      "modelOutcome": "skipped",
-      "latencyMs": null,
-      "costUsd": null
+      "model": "gpt-4o-mini",
+      "modelOutcome": "error",
+      "latencyMs": 193,
+      "costUsd": null,
+      "error": "You have no credits remaining. Add credits to continue using the API at https://platform.openai.com/settings/organization/billing/."
     },
     {
       "id": "03",
@@ -102,10 +104,11 @@
         "available": false,
         "query": "la fresa de agua me avisan"
       },
-      "model": null,
-      "modelOutcome": "skipped",
-      "latencyMs": null,
-      "costUsd": null
+      "model": "gpt-4o-mini",
+      "modelOutcome": "error",
+      "latencyMs": 173,
+      "costUsd": null,
+      "error": "You have no credits remaining. Add credits to continue using the API at https://platform.openai.com/settings/organization/billing/."
     },
     {
       "id": "04",
@@ -122,10 +125,11 @@
       "actual": {
         "type": "unknown"
       },
-      "model": null,
-      "modelOutcome": "skipped",
-      "latencyMs": null,
-      "costUsd": null
+      "model": "gpt-4o-mini",
+      "modelOutcome": "error",
+      "latencyMs": 97,
+      "costUsd": null,
+      "error": "You have no credits remaining. Add credits to continue using the API at https://platform.openai.com/settings/organization/billing/."
     },
     {
       "id": "05",
@@ -141,10 +145,11 @@
       "actual": {
         "type": "unknown"
       },
-      "model": null,
-      "modelOutcome": "skipped",
-      "latencyMs": null,
-      "costUsd": null
+      "model": "gpt-4o-mini",
+      "modelOutcome": "error",
+      "latencyMs": 169,
+      "costUsd": null,
+      "error": "You have no credits remaining. Add credits to continue using the API at https://platform.openai.com/settings/organization/billing/."
     },
     {
       "id": "06",
@@ -160,10 +165,11 @@
       "actual": {
         "type": "unknown"
       },
-      "model": null,
-      "modelOutcome": "skipped",
-      "latencyMs": null,
-      "costUsd": null
+      "model": "gpt-4o-mini",
+      "modelOutcome": "error",
+      "latencyMs": 93,
+      "costUsd": null,
+      "error": "You have no credits remaining. Add credits to continue using the API at https://platform.openai.com/settings/organization/billing/."
     },
     {
       "id": "07",
@@ -180,10 +186,11 @@
       "actual": {
         "type": "unknown"
       },
-      "model": null,
-      "modelOutcome": "skipped",
-      "latencyMs": null,
-      "costUsd": null
+      "model": "gpt-4o-mini",
+      "modelOutcome": "error",
+      "latencyMs": 80,
+      "costUsd": null,
+      "error": "You have no credits remaining. Add credits to continue using the API at https://platform.openai.com/settings/organization/billing/."
     },
     {
       "id": "08",
@@ -199,10 +206,11 @@
       "actual": {
         "type": "unknown"
       },
-      "model": null,
-      "modelOutcome": "skipped",
-      "latencyMs": null,
-      "costUsd": null
+      "model": "gpt-4o-mini",
+      "modelOutcome": "error",
+      "latencyMs": 76,
+      "costUsd": null,
+      "error": "You have no credits remaining. Add credits to continue using the API at https://platform.openai.com/settings/organization/billing/."
     },
     {
       "id": "09",
@@ -218,10 +226,11 @@
       "actual": {
         "type": "unknown"
       },
-      "model": null,
-      "modelOutcome": "skipped",
-      "latencyMs": null,
-      "costUsd": null
+      "model": "gpt-4o-mini",
+      "modelOutcome": "error",
+      "latencyMs": 96,
+      "costUsd": null,
+      "error": "You have no credits remaining. Add credits to continue using the API at https://platform.openai.com/settings/organization/billing/."
     },
     {
       "id": "10",
@@ -237,10 +246,11 @@
       "actual": {
         "type": "unknown"
       },
-      "model": null,
-      "modelOutcome": "skipped",
-      "latencyMs": null,
-      "costUsd": null
+      "model": "gpt-4o-mini",
+      "modelOutcome": "error",
+      "latencyMs": 80,
+      "costUsd": null,
+      "error": "You have no credits remaining. Add credits to continue using the API at https://platform.openai.com/settings/organization/billing/."
     },
     {
       "id": "11",
@@ -256,10 +266,11 @@
       "actual": {
         "type": "unknown"
       },
-      "model": null,
-      "modelOutcome": "skipped",
-      "latencyMs": null,
-      "costUsd": null
+      "model": "gpt-4o-mini",
+      "modelOutcome": "error",
+      "latencyMs": 109,
+      "costUsd": null,
+      "error": "You have no credits remaining. Add credits to continue using the API at https://platform.openai.com/settings/organization/billing/."
     },
     {
       "id": "12",
@@ -275,10 +286,11 @@
       "actual": {
         "type": "unknown"
       },
-      "model": null,
-      "modelOutcome": "skipped",
-      "latencyMs": null,
-      "costUsd": null
+      "model": "gpt-4o-mini",
+      "modelOutcome": "error",
+      "latencyMs": 81,
+      "costUsd": null,
+      "error": "You have no credits remaining. Add credits to continue using the API at https://platform.openai.com/settings/organization/billing/."
     },
     {
       "id": "13",
@@ -294,10 +306,11 @@
       "actual": {
         "type": "unknown"
       },
-      "model": null,
-      "modelOutcome": "skipped",
-      "latencyMs": null,
-      "costUsd": null
+      "model": "gpt-4o-mini",
+      "modelOutcome": "error",
+      "latencyMs": 76,
+      "costUsd": null,
+      "error": "You have no credits remaining. Add credits to continue using the API at https://platform.openai.com/settings/organization/billing/."
     },
     {
       "id": "14",
@@ -313,10 +326,11 @@
       "actual": {
         "type": "unknown"
       },
-      "model": null,
-      "modelOutcome": "skipped",
-      "latencyMs": null,
-      "costUsd": null
+      "model": "gpt-4o-mini",
+      "modelOutcome": "error",
+      "latencyMs": 101,
+      "costUsd": null,
+      "error": "You have no credits remaining. Add credits to continue using the API at https://platform.openai.com/settings/organization/billing/."
     },
     {
       "id": "15",
@@ -332,10 +346,11 @@
       "actual": {
         "type": "unknown"
       },
-      "model": null,
-      "modelOutcome": "skipped",
-      "latencyMs": null,
-      "costUsd": null
+      "model": "gpt-4o-mini",
+      "modelOutcome": "error",
+      "latencyMs": 82,
+      "costUsd": null,
+      "error": "You have no credits remaining. Add credits to continue using the API at https://platform.openai.com/settings/organization/billing/."
     },
     {
       "id": "16",
@@ -353,10 +368,11 @@
         "available": true,
         "query": "un sabor nuevo de agua se llama tuna"
       },
-      "model": null,
-      "modelOutcome": "skipped",
-      "latencyMs": null,
-      "costUsd": null
+      "model": "gpt-4o-mini",
+      "modelOutcome": "error",
+      "latencyMs": 172,
+      "costUsd": null,
+      "error": "You have no credits remaining. Add credits to continue using the API at https://platform.openai.com/settings/organization/billing/."
     },
     {
       "id": "17",
@@ -372,10 +388,11 @@
       "actual": {
         "type": "unknown"
       },
-      "model": null,
-      "modelOutcome": "skipped",
-      "latencyMs": null,
-      "costUsd": null
+      "model": "gpt-4o-mini",
+      "modelOutcome": "error",
+      "latencyMs": 89,
+      "costUsd": null,
+      "error": "You have no credits remaining. Add credits to continue using the API at https://platform.openai.com/settings/organization/billing/."
     },
     {
       "id": "18",
@@ -391,10 +408,11 @@
         "type": "hide_item",
         "query": "el gansito del tablero"
       },
-      "model": null,
-      "modelOutcome": "skipped",
-      "latencyMs": null,
-      "costUsd": null
+      "model": "gpt-4o-mini",
+      "modelOutcome": "error",
+      "latencyMs": 72,
+      "costUsd": null,
+      "error": "You have no credits remaining. Add credits to continue using the API at https://platform.openai.com/settings/organization/billing/."
     },
     {
       "id": "19",
@@ -410,10 +428,11 @@
         "type": "hide_item",
         "query": "el mazapan ya no lo vendemos"
       },
-      "model": null,
-      "modelOutcome": "skipped",
-      "latencyMs": null,
-      "costUsd": null
+      "model": "gpt-4o-mini",
+      "modelOutcome": "error",
+      "latencyMs": 92,
+      "costUsd": null,
+      "error": "You have no credits remaining. Add credits to continue using the API at https://platform.openai.com/settings/organization/billing/."
     },
     {
       "id": "20",
@@ -428,10 +447,11 @@
       "actual": {
         "type": "unknown"
       },
-      "model": null,
-      "modelOutcome": "skipped",
-      "latencyMs": null,
-      "costUsd": null
+      "model": "gpt-4o-mini",
+      "modelOutcome": "error",
+      "latencyMs": 75,
+      "costUsd": null,
+      "error": "You have no credits remaining. Add credits to continue using the API at https://platform.openai.com/settings/organization/billing/."
     },
     {
       "id": "21",
@@ -447,10 +467,11 @@
         "type": "set_photo",
         "query": "del de chocolate"
       },
-      "model": null,
-      "modelOutcome": "skipped",
-      "latencyMs": null,
-      "costUsd": null
+      "model": "gpt-4o-mini",
+      "modelOutcome": "error",
+      "latencyMs": 158,
+      "costUsd": null,
+      "error": "You have no credits remaining. Add credits to continue using the API at https://platform.openai.com/settings/organization/billing/."
     },
     {
       "id": "22",
@@ -465,10 +486,11 @@
       "actual": {
         "type": "unknown"
       },
-      "model": null,
-      "modelOutcome": "skipped",
-      "latencyMs": null,
-      "costUsd": null
+      "model": "gpt-4o-mini",
+      "modelOutcome": "error",
+      "latencyMs": 74,
+      "costUsd": null,
+      "error": "You have no credits remaining. Add credits to continue using the API at https://platform.openai.com/settings/organization/billing/."
     },
     {
       "id": "23",
@@ -484,10 +506,11 @@
       "actual": {
         "type": "unknown"
       },
-      "model": null,
-      "modelOutcome": "skipped",
-      "latencyMs": null,
-      "costUsd": null
+      "model": "gpt-4o-mini",
+      "modelOutcome": "error",
+      "latencyMs": 81,
+      "costUsd": null,
+      "error": "You have no credits remaining. Add credits to continue using the API at https://platform.openai.com/settings/organization/billing/."
     },
     {
       "id": "24",
@@ -501,10 +524,11 @@
       "actual": {
         "type": "unknown"
       },
-      "model": null,
-      "modelOutcome": "skipped",
-      "latencyMs": null,
-      "costUsd": null
+      "model": "gpt-4o-mini",
+      "modelOutcome": "error",
+      "latencyMs": 89,
+      "costUsd": null,
+      "error": "You have no credits remaining. Add credits to continue using the API at https://platform.openai.com/settings/organization/billing/."
     },
     {
       "id": "25",
@@ -518,10 +542,11 @@
       "actual": {
         "type": "unknown"
       },
-      "model": null,
-      "modelOutcome": "skipped",
-      "latencyMs": null,
-      "costUsd": null
+      "model": "gpt-4o-mini",
+      "modelOutcome": "error",
+      "latencyMs": 81,
+      "costUsd": null,
+      "error": "You have no credits remaining. Add credits to continue using the API at https://platform.openai.com/settings/organization/billing/."
     },
     {
       "id": "26",
@@ -535,10 +560,11 @@
       "actual": {
         "type": "unknown"
       },
-      "model": null,
-      "modelOutcome": "skipped",
-      "latencyMs": null,
-      "costUsd": null
+      "model": "gpt-4o-mini",
+      "modelOutcome": "error",
+      "latencyMs": 77,
+      "costUsd": null,
+      "error": "You have no credits remaining. Add credits to continue using the API at https://platform.openai.com/settings/organization/billing/."
     },
     {
       "id": "27",
@@ -552,10 +578,11 @@
       "actual": {
         "type": "unknown"
       },
-      "model": null,
-      "modelOutcome": "skipped",
-      "latencyMs": null,
-      "costUsd": null
+      "model": "gpt-4o-mini",
+      "modelOutcome": "error",
+      "latencyMs": 118,
+      "costUsd": null,
+      "error": "You have no credits remaining. Add credits to continue using the API at https://platform.openai.com/settings/organization/billing/."
     },
     {
       "id": "28",
@@ -569,10 +596,11 @@
       "actual": {
         "type": "unknown"
       },
-      "model": null,
-      "modelOutcome": "skipped",
-      "latencyMs": null,
-      "costUsd": null
+      "model": "gpt-4o-mini",
+      "modelOutcome": "error",
+      "latencyMs": 82,
+      "costUsd": null,
+      "error": "You have no credits remaining. Add credits to continue using the API at https://platform.openai.com/settings/organization/billing/."
     },
     {
       "id": "29",
@@ -586,10 +614,11 @@
       "actual": {
         "type": "unknown"
       },
-      "model": null,
-      "modelOutcome": "skipped",
-      "latencyMs": null,
-      "costUsd": null
+      "model": "gpt-4o-mini",
+      "modelOutcome": "error",
+      "latencyMs": 78,
+      "costUsd": null,
+      "error": "You have no credits remaining. Add credits to continue using the API at https://platform.openai.com/settings/organization/billing/."
     },
     {
       "id": "30",
@@ -603,10 +632,11 @@
       "actual": {
         "type": "unknown"
       },
-      "model": null,
-      "modelOutcome": "skipped",
-      "latencyMs": null,
-      "costUsd": null
+      "model": "gpt-4o-mini",
+      "modelOutcome": "error",
+      "latencyMs": 68,
+      "costUsd": null,
+      "error": "You have no credits remaining. Add credits to continue using the API at https://platform.openai.com/settings/organization/billing/."
     },
     {
       "id": "31",
@@ -620,10 +650,11 @@
       "actual": {
         "type": "unknown"
       },
-      "model": null,
-      "modelOutcome": "skipped",
-      "latencyMs": null,
-      "costUsd": null
+      "model": "gpt-4o-mini",
+      "modelOutcome": "error",
+      "latencyMs": 82,
+      "costUsd": null,
+      "error": "You have no credits remaining. Add credits to continue using the API at https://platform.openai.com/settings/organization/billing/."
     },
     {
       "id": "32",
@@ -640,10 +671,11 @@
       "actual": {
         "type": "unknown"
       },
-      "model": null,
-      "modelOutcome": "skipped",
-      "latencyMs": null,
-      "costUsd": null
+      "model": "gpt-4o-mini",
+      "modelOutcome": "error",
+      "latencyMs": 93,
+      "costUsd": null,
+      "error": "You have no credits remaining. Add credits to continue using the API at https://platform.openai.com/settings/organization/billing/."
     }
   ]
 }

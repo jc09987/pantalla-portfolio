@@ -35,6 +35,7 @@ function notCalled(): ModelTrace {
     latencyMs: null,
     costUsd: null,
     command: null,
+    error: null,
   };
 }
 

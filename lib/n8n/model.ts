@@ -16,6 +16,7 @@ export type ModelTrace = {
   latencyMs: number | null;
   costUsd: number | null;
   command: ParsedCommand | null;
+  error: string | null;
 };
 
 const DEFAULT_MODEL = "gpt-4o-mini";
@@ -53,8 +54,17 @@ function catalogPrompt() {
   return `${lines.join("\n")}\nPrices: ${tiers}`;
 }
 
-function emptyTrace(outcome: ModelOutcome, model: string | null = null): ModelTrace {
-  return { outcome, model, latencyMs: null, costUsd: null, command: null };
+function emptyTrace(
+  outcome: ModelOutcome,
+  model: string | null = null,
+  error: string | null = null,
+): ModelTrace {
+  return { outcome, model, latencyMs: null, costUsd: null, command: null, error };
+}
+
+function errorText(value: unknown) {
+  const message = value instanceof Error ? value.message : "The model request failed.";
+  return message.replace(/\s+/g, " ").slice(0, 240);
 }
 
 export async function interpretWithModel(text: string): Promise<ModelTrace> {
@@ -103,7 +113,14 @@ export async function interpretWithModel(text: string): Promise<ModelTrace> {
       choices?: Array<{ message?: { content?: string } }>;
     };
     if (!response.ok) {
-      return { outcome: "error", model, latencyMs, costUsd: null, command: null };
+      return {
+        outcome: "error",
+        model,
+        latencyMs,
+        costUsd: null,
+        command: null,
+        error: body.error?.message?.replace(/\s+/g, " ").slice(0, 240) || `HTTP ${response.status}`,
+      };
     }
 
     const costUsd = costForUsage(
@@ -120,19 +137,20 @@ export async function interpretWithModel(text: string): Promise<ModelTrace> {
     }
     const command = acceptModelCommand(raw);
     if (!command) {
-      return { outcome: "rejected_shape", model, latencyMs, costUsd, command: null };
+      return { outcome: "rejected_shape", model, latencyMs, costUsd, command: null, error: null };
     }
     if (command.type === "unknown") {
-      return { outcome: "unknown", model, latencyMs, costUsd, command };
+      return { outcome: "unknown", model, latencyMs, costUsd, command, error: null };
     }
-    return { outcome: "accepted", model, latencyMs, costUsd, command };
-  } catch {
+    return { outcome: "accepted", model, latencyMs, costUsd, command, error: null };
+  } catch (error) {
     return {
       outcome: "error",
       model,
       latencyMs: Date.now() - started,
       costUsd: null,
       command: null,
+      error: errorText(error),
     };
   }
 }

@@ -1,4 +1,4 @@
-import { writeFileSync } from "node:fs";
+import { existsSync, readFileSync, writeFileSync } from "node:fs";
 import { resolve } from "node:path";
 import messages from "../evals/messages.json";
 import { commandMatches, type ExpectedCommand } from "../lib/n8n/eval";
@@ -37,7 +37,29 @@ const schemaChecks = schemaProbes.map((probe) => {
   return { name: probe.name, pass, accept: probe.accept };
 });
 
+function loadEnvFile() {
+  const path = resolve(process.cwd(), ".env");
+  if (!existsSync(path)) return;
+  for (const line of readFileSync(path, "utf8").split("\n")) {
+    const trimmed = line.trim();
+    if (!trimmed || trimmed.startsWith("#")) continue;
+    const eq = trimmed.indexOf("=");
+    if (eq < 1) continue;
+    const key = trimmed.slice(0, eq).trim();
+    if (process.env[key]) continue;
+    let value = trimmed.slice(eq + 1).trim();
+    if (
+      (value.startsWith('"') && value.endsWith('"')) ||
+      (value.startsWith("'") && value.endsWith("'"))
+    ) {
+      value = value.slice(1, -1);
+    }
+    process.env[key] = value;
+  }
+}
+
 async function main() {
+  loadEnvFile();
   const rows = [];
   for (const message of messages) {
     const resolved = await resolveCommand(message.text);
@@ -54,16 +76,22 @@ async function main() {
       modelOutcome: resolved.model.outcome,
       latencyMs: resolved.model.latencyMs,
       costUsd: resolved.model.costUsd,
+      error: resolved.model.error,
     });
   }
 
   const passed = rows.filter((row) => row.pass).length;
+  const modelErrors = rows.filter((row) => row.modelOutcome === "error");
+  const modelName = rows.find((row) => row.model)?.model ?? "the model";
+  const note = !process.env.OPENAI_API_KEY
+    ? "OPENAI_API_KEY was not set, so every row is the regex fallback. model, latencyMs, and costUsd stay null until npm run eval with a key."
+    : modelErrors.length === rows.length
+      ? `${modelName} failed for every message: ${(modelErrors[0]?.error ?? "request failed").replace(/\.+$/, "")}. Every row is the regex fallback. latencyMs is the failed request. costUsd stays null because no tokens were billed.`
+      : "Each row is the resolved command. The model is used when it returns one of the closed shapes. Unknown, a rejected shape, or a model error falls back to the regex parser. latencyMs and costUsd are from that model call.";
   const report = {
     ranAt: new Date().toISOString(),
     model: rows.find((row) => row.model)?.model ?? null,
-    note: process.env.OPENAI_API_KEY
-      ? "Model ran. A row passes when the resolved command matches expect. The resolver uses the model only for an accepted shape; unknown and rejected shapes fall back to the regex parser."
-      : "OPENAI_API_KEY was not set, so every row is the regex fallback. model, latencyMs, and costUsd stay null until npm run eval with a key.",
+    note,
     summary: { total: rows.length, pass: passed, fail: rows.length - passed },
     schemaChecks,
     cases: rows,
