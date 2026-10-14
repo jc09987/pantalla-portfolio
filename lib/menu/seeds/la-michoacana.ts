@@ -44,6 +44,36 @@ const leche = [
   "Rocio",
 ] as const;
 
+const paletas = [
+  "Mangonada",
+  "Diablito",
+  "Viuda",
+  "Chamoyada",
+  "Nuez enchilada",
+  "Elote con chile",
+  "Café de olla",
+  "Coco rayado",
+  "Fresa con crema",
+  "Limón con sal",
+  "Mango chile",
+  "Piña colada",
+] as const;
+
+const especiales = [
+  "Nutella",
+  "Ferrero",
+  "Oreo",
+  "Beso de ángel",
+  "Cajeta quemada",
+  "Queso con mora",
+  "Kinder",
+  "Snickers",
+  "Bubulubu",
+  "Pelón",
+  "Lucas",
+  "Takis",
+] as const;
+
 export const LA_MICHOACANA_SNAPSHOT: MenuSnapshot = {
   revision: 1,
   store: {
@@ -108,7 +138,7 @@ export const LA_MICHOACANA_SNAPSHOT: MenuSnapshot = {
     {
       id: "band-lists",
       name: "Listas",
-      componentIds: ["agua", "leche"],
+      componentIds: ["agua", "leche", "paletas", "especiales"],
     },
   ],
   sections: [
@@ -135,6 +165,34 @@ export const LA_MICHOACANA_SNAPSHOT: MenuSnapshot = {
       headerIcon: "milk",
       items: leche.map((name, index) => ({
         id: `leche-${index + 1}`,
+        name,
+        available: true,
+        animation: "cascade",
+      })),
+    },
+    {
+      id: "paletas",
+      name: "PALETAS",
+      kind: "agua",
+      component: "products",
+      columns: 2,
+      headerIcon: "ice-cream",
+      items: paletas.map((name, index) => ({
+        id: `paletas-${index + 1}`,
+        name,
+        available: true,
+        animation: "cascade",
+      })),
+    },
+    {
+      id: "especiales",
+      name: "ESPECIALES",
+      kind: "leche",
+      component: "products",
+      columns: 2,
+      headerIcon: "cake",
+      items: especiales.map((name, index) => ({
+        id: `especiales-${index + 1}`,
         name,
         available: true,
         animation: "cascade",

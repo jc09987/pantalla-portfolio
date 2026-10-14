@@ -231,15 +231,13 @@ function ProductListPanel({
   const isAgua = section.kind === "agua";
   const accent = isAgua ? "var(--micho-blue)" : "var(--micho-pink)";
   const headerIcon = section.headerIcon ?? defaultListIcon(section.kind);
-  const rowPx = portrait ? LIST_ROW_PX : stacked ? 48 : 28;
+  const rowPx = portrait || !stacked ? LIST_ROW_PX : 48;
   const wavePx = portrait ? 40 : 24;
   const showThumbs = portrait || !stacked;
 
   return (
     <section
-      className={`@container relative flex min-h-0 flex-col overflow-hidden rounded-[24px] border-[4px] bg-[var(--micho-surface)] ${
-        portrait ? "" : "h-full"
-      }`}
+      className="@container relative flex w-full min-h-0 flex-col overflow-hidden rounded-[24px] border-[4px] bg-[var(--micho-surface)]"
       style={{ borderColor: accent }}
     >
       <div
@@ -269,7 +267,7 @@ function ProductListPanel({
           {section.name}
         </h2>
       </div>
-      <div className="flex min-h-0 flex-1 flex-col overflow-hidden">
+      <div className="flex shrink-0 flex-col overflow-hidden">
         <div
           className={`relative z-10 grid overflow-hidden pt-1 transition-opacity duration-500 ${
             stacked ? "px-2" : "px-3"
@@ -350,7 +348,6 @@ function ProductListPanel({
             </ul>
           ))}
         </div>
-        {portrait ? null : <div className="min-h-0 flex-1" aria-hidden />}
         <div
           className="pointer-events-none relative z-0 shrink-0 overflow-hidden anim-splash"
           style={{ height: wavePx }}
@@ -605,7 +602,6 @@ export function BoardSection({
 }
 
 const LANDSCAPE_COMPONENTS_PER_ROW = 2;
-const LANDSCAPE_COL_TRACKS = LIST_MAX_COLUMNS * LANDSCAPE_COMPONENTS_PER_ROW;
 
 function landscapeWeight(section: MenuSnapshot["sections"][number]) {
   const component = asSectionComponent(section.component);
@@ -614,12 +610,11 @@ function landscapeWeight(section: MenuSnapshot["sections"][number]) {
 }
 
 function landscapeRowTemplate(row: MenuSnapshot["sections"]) {
-  const weights = row.map(landscapeWeight);
-  const used = weights.reduce((sum, weight) => sum + weight, 0);
-  const rest = Math.max(LANDSCAPE_COL_TRACKS - used, 0);
-  const tracks = weights.map((weight) => `minmax(0, ${weight}fr)`);
-  if (rest > 0) tracks.push(`minmax(0, ${rest}fr)`);
-  return tracks.join(" ");
+  return row.map((section) => `minmax(0, ${landscapeWeight(section)}fr)`).join(" ");
+}
+
+function isProductList(section: MenuSnapshot["sections"][number]) {
+  return asSectionComponent(section.component) === "products";
 }
 
 function LandscapeBand({
@@ -639,22 +634,25 @@ function LandscapeBand({
     packedRows.push(blocks.slice(index, index + LANDSCAPE_COMPONENTS_PER_ROW));
   }
   const rows = packedRows.length ? packedRows : [[]];
+  const listsOnly = blocks.length > 0 && blocks.every(isProductList);
 
   if (!spanByColumns) {
     const columns = Math.min(LANDSCAPE_COMPONENTS_PER_ROW, Math.max(blocks.length, 1));
     const rowCount = Math.max(Math.ceil(blocks.length / columns), 1);
     return (
       <div
-        className="grid h-full min-h-0 min-w-0 gap-3 overflow-hidden"
+        className={`grid h-full min-h-0 min-w-0 gap-3 overflow-hidden ${listsOnly ? "content-between" : ""}`}
         style={{
           gridTemplateColumns: `repeat(${columns}, minmax(0, 1fr))`,
-          gridTemplateRows: `repeat(${rowCount}, minmax(0, 1fr))`,
+          gridTemplateRows: listsOnly
+            ? `repeat(${rowCount}, max-content)`
+            : `repeat(${rowCount}, minmax(0, 1fr))`,
         }}
       >
         {blocks.map((section) => (
-          <div key={section.id} className="min-h-0 min-w-0 overflow-hidden [&>*]:h-full">
+          <BandCell key={section.id} section={section}>
             <BoardSection menu={menu} section={section} promoRows={promoRows} />
-          </div>
+          </BandCell>
         ))}
       </div>
     );
@@ -662,27 +660,44 @@ function LandscapeBand({
 
   return (
     <div
-      className="grid h-full min-h-0 min-w-0 gap-3 overflow-hidden"
-      style={{ gridTemplateRows: `repeat(${rows.length}, minmax(0, 1fr))` }}
+      className={`grid h-full min-h-0 min-w-0 gap-3 overflow-hidden ${listsOnly ? "content-between" : ""}`}
+      style={{
+        gridTemplateRows: listsOnly
+          ? `repeat(${rows.length}, max-content)`
+          : `repeat(${rows.length}, minmax(0, 1fr))`,
+      }}
     >
       {rows.map((row, rowIndex) => (
         <div
           key={rowIndex}
-          className="grid min-h-0 min-w-0 gap-3 overflow-hidden"
+          className="grid min-h-0 min-w-0 items-start gap-3"
           style={{
             gridTemplateColumns: row.length ? landscapeRowTemplate(row) : "minmax(0, 1fr)",
-            gridTemplateRows: "minmax(0, 1fr)",
+            gridTemplateRows: "max-content",
           }}
         >
           {row.map((section) => (
-            <div key={section.id} className="min-h-0 min-w-0 overflow-hidden [&>*]:h-full">
+            <BandCell key={section.id} section={section}>
               <BoardSection menu={menu} section={section} promoRows={promoRows} />
-            </div>
+            </BandCell>
           ))}
         </div>
       ))}
     </div>
   );
+}
+
+function BandCell({
+  section,
+  children,
+}: {
+  section: MenuSnapshot["sections"][number];
+  children: ReactNode;
+}) {
+  if (isProductList(section)) {
+    return <div className="min-w-0 self-start">{children}</div>;
+  }
+  return <div className="h-full min-h-0 min-w-0 overflow-hidden [&>*]:h-full">{children}</div>;
 }
 
 export function LayoutCanvas({
