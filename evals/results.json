@@ -1,5 +1,5 @@
 {
-  "ranAt": "2026-10-14T19:04:50.945Z",
+  "ranAt": "2026-10-14T21:27:16.436Z",
   "model": null,
   "note": "OPENAI_API_KEY was not set, so every row is the regex fallback. model, latencyMs, and costUsd stay null until npm run eval with a key.",
   "summary": {
