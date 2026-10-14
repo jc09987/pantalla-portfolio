@@ -433,12 +433,13 @@ function PromoPanel({
   const portrait = usePortrait();
   const items = section.items.filter((item) => item.available);
   const page = useCycledPage(items, rows);
+  const compact = rows === 1;
 
   return (
     <section className="grid h-full min-h-0 grid-rows-[auto_1fr] overflow-hidden">
       <h2
-        className={`px-1 pb-2 font-display text-[var(--micho-pink)] ${
-          portrait ? "text-[28px]" : "text-[36px]"
+        className={`px-1 font-display leading-none text-[var(--micho-pink)] ${
+          compact ? "pb-1 text-[22px]" : portrait ? "pb-2 text-[28px]" : "pb-2 text-[36px]"
         }`}
       >
         {section.name}
@@ -454,7 +455,7 @@ function PromoPanel({
               item={item}
               menu={menu}
               index={index}
-              compact={portrait && rows === 1}
+              compact={compact}
             />
           ))
         ) : (
@@ -617,6 +618,32 @@ function isProductList(section: MenuSnapshot["sections"][number]) {
   return asSectionComponent(section.component) === "products";
 }
 
+function spansFullWidth(section: MenuSnapshot["sections"][number]) {
+  const component = asSectionComponent(section.component);
+  return component === "promo" || component === "prices" || component === "heroes" || component === "carousel";
+}
+
+function packLandscapeRows(blocks: MenuSnapshot["sections"]) {
+  const rows: MenuSnapshot["sections"][] = [];
+  let current: MenuSnapshot["sections"] = [];
+  const flush = () => {
+    if (!current.length) return;
+    rows.push(current);
+    current = [];
+  };
+  for (const block of blocks) {
+    if (spansFullWidth(block)) {
+      flush();
+      rows.push([block]);
+      continue;
+    }
+    current.push(block);
+    if (current.length === LANDSCAPE_COMPONENTS_PER_ROW) flush();
+  }
+  flush();
+  return rows.length ? rows : [[]];
+}
+
 function LandscapeBand({
   menu,
   band,
@@ -629,22 +656,20 @@ function LandscapeBand({
   spanByColumns?: boolean;
 }) {
   const blocks = componentsForSection(menu.sections, band);
-  const packedRows: (typeof blocks)[] = [];
-  for (let index = 0; index < blocks.length; index += LANDSCAPE_COMPONENTS_PER_ROW) {
-    packedRows.push(blocks.slice(index, index + LANDSCAPE_COMPONENTS_PER_ROW));
-  }
-  const rows = packedRows.length ? packedRows : [[]];
-  const listsOnly = blocks.length > 0 && blocks.every(isProductList);
+  const rows = packLandscapeRows(blocks);
+  const sized =
+    blocks.length > 0 &&
+    blocks.every((section) => isProductList(section) || asSectionComponent(section.component) === "promo");
 
-  if (!spanByColumns) {
+  if (!spanByColumns && !blocks.some(spansFullWidth)) {
     const columns = Math.min(LANDSCAPE_COMPONENTS_PER_ROW, Math.max(blocks.length, 1));
     const rowCount = Math.max(Math.ceil(blocks.length / columns), 1);
     return (
       <div
-        className={`grid h-full min-h-0 min-w-0 gap-3 overflow-hidden ${listsOnly ? "content-between" : ""}`}
+        className={`grid h-full min-h-0 min-w-0 gap-3 overflow-hidden ${sized ? "content-between" : ""}`}
         style={{
           gridTemplateColumns: `repeat(${columns}, minmax(0, 1fr))`,
-          gridTemplateRows: listsOnly
+          gridTemplateRows: sized
             ? `repeat(${rowCount}, max-content)`
             : `repeat(${rowCount}, minmax(0, 1fr))`,
         }}
@@ -660,9 +685,9 @@ function LandscapeBand({
 
   return (
     <div
-      className={`grid h-full min-h-0 min-w-0 gap-3 overflow-hidden ${listsOnly ? "content-between" : ""}`}
+      className={`grid h-full min-h-0 min-w-0 gap-3 overflow-hidden ${sized ? "content-between" : ""}`}
       style={{
-        gridTemplateRows: listsOnly
+        gridTemplateRows: sized
           ? `repeat(${rows.length}, max-content)`
           : `repeat(${rows.length}, minmax(0, 1fr))`,
       }}
@@ -687,6 +712,8 @@ function LandscapeBand({
   );
 }
 
+const PROMO_BAND_PX = 148;
+
 function BandCell({
   section,
   children,
@@ -696,6 +723,13 @@ function BandCell({
 }) {
   if (isProductList(section)) {
     return <div className="min-w-0 self-start">{children}</div>;
+  }
+  if (asSectionComponent(section.component) === "promo") {
+    return (
+      <div className="min-w-0 overflow-hidden" style={{ height: PROMO_BAND_PX }}>
+        {children}
+      </div>
+    );
   }
   return <div className="h-full min-h-0 min-w-0 overflow-hidden [&>*]:h-full">{children}</div>;
 }

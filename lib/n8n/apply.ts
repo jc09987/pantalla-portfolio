@@ -29,7 +29,7 @@ type MenuContext = {
   storeSlug: string;
   items: MatchableItem[];
   tiers: MatchableTier[];
-  sections: Array<{ id: string; name: string; kind: SectionKind }>;
+  sections: Array<{ id: string; name: string; kind: SectionKind; component: string }>;
 };
 
 async function loadMenu(api: ApiClient, storeId: string): Promise<MenuContext | null> {
@@ -42,7 +42,7 @@ async function loadMenu(api: ApiClient, storeId: string): Promise<MenuContext | 
   const [{ data: sections }, { data: tiers }] = await Promise.all([
     api
       .from("menu_sections")
-      .select("id, name, kind, sort_order")
+      .select("id, name, kind, component, sort_order")
       .eq("menu_id", menuId)
       .order("sort_order"),
     api
@@ -70,6 +70,7 @@ async function loadMenu(api: ApiClient, storeId: string): Promise<MenuContext | 
       id: section.id,
       name: section.name,
       kind: section.kind as SectionKind,
+      component: typeof section.component === "string" ? section.component : "products",
     })),
     tiers: (tiers ?? []).map((tier) => ({
       id: tier.id,
@@ -178,15 +179,43 @@ export async function applyParsedCommand(
 
   if (command.type === "set_price") {
     const match = matchTier(menu.tiers, command);
-    if (match.status === "none") {
-      return { status: "unknown", reply: "No encontré ese precio.", published: false };
-    }
     if (match.status === "ambiguous") {
       return {
         status: "ambiguous",
         reply: `¿${match.tiers.map((tier) => tier.label).join(" o ")}?`,
         published: false,
       };
+    }
+    if (match.status === "none" && command.labelQuery) {
+      const promoIds = new Set(
+        menu.sections.filter((section) => section.component === "promo").map((section) => section.id),
+      );
+      const promoMatch = matchItems(
+        menu.items.filter((item) => promoIds.has(item.section_id)),
+        command.labelQuery,
+      );
+      if (promoMatch.status === "ambiguous") {
+        return { status: "ambiguous", reply: askWhich(promoMatch.items), published: false };
+      }
+      if (promoMatch.status === "one") {
+        const { error } = await api
+          .from("menu_items")
+          .update({ price: command.price.toFixed(2) })
+          .eq("id", promoMatch.item.id);
+        if (error) return { status: "error", reply: error.message, published: false };
+        const published = await publish(api, storeId);
+        if (!published.published) {
+          return { status: "error", reply: published.error, published: false };
+        }
+        return {
+          status: "applied",
+          reply: `${promoMatch.item.name} quedó en $${command.price.toFixed(2)}.`,
+          published: true,
+        };
+      }
+    }
+    if (match.status !== "one") {
+      return { status: "unknown", reply: "No encontré ese precio.", published: false };
     }
     const { error } = await api
       .from("price_tiers")

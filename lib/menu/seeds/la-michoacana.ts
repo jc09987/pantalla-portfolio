@@ -138,7 +138,7 @@ export const LA_MICHOACANA_SNAPSHOT: MenuSnapshot = {
     {
       id: "band-lists",
       name: "Listas",
-      componentIds: ["agua", "leche", "paletas", "especiales"],
+      componentIds: ["agua", "leche", "promo", "paletas", "especiales"],
     },
   ],
   sections: [
@@ -169,6 +169,23 @@ export const LA_MICHOACANA_SNAPSHOT: MenuSnapshot = {
         available: true,
         animation: "cascade",
       })),
+    },
+    {
+      id: "promo",
+      name: "PROMOCIÓN",
+      kind: "leche",
+      component: "promo",
+      columns: 1,
+      items: [
+        {
+          id: "promo-1",
+          name: "2x1 de mango",
+          description: "Dos nieves de mango por el precio de una",
+          price: 4.99,
+          available: true,
+          animation: "ken-burns",
+        },
+      ],
     },
     {
       id: "paletas",

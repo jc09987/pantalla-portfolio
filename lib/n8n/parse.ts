@@ -52,18 +52,18 @@ export function parseCommand(text: string): ParsedCommand {
     return { type: "set_photo", ...withKind(photo[1]) };
   }
 
-  const pricedScoops = folded.match(/^precio\s+(\d+)\s*(?:bolas?|scoops?)\s+(\d+(?:[.,]\d{1,2})?)$/);
+  const pricedScoops = trimmed.match(/^precio\s+(\d+)\s*(?:bolas?|scoops?)\s+(\d+(?:[.,]\d{1,2})?)$/i);
   if (pricedScoops?.[1] && pricedScoops[2]) {
     const price = parsePriceAmount(pricedScoops[2]);
     if (price == null) return { type: "unknown" };
     return { type: "set_price", scoopCount: Number(pricedScoops[1]), price };
   }
 
-  const pricedLabel = folded.match(/^precio\s+(.+?)\s+(\d+(?:[.,]\d{1,2})?)$/);
+  const pricedLabel = trimmed.match(/^precio\s+(.+?)\s+(\d+(?:[.,]\d{1,2})?)$/i);
   if (pricedLabel?.[1] && pricedLabel[2]) {
     const price = parsePriceAmount(pricedLabel[2]);
     if (price == null) return { type: "unknown" };
-    return { type: "set_price", labelQuery: pricedLabel[1], price };
+    return { type: "set_price", labelQuery: foldText(pricedLabel[1]), price };
   }
 
   const add =

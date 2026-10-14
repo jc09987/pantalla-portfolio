@@ -87,13 +87,45 @@ export function applyCommandToSnapshot(
       price: tier.price,
     }));
     const match = matchTier(tiers, command);
-    if (match.status === "none") return unchanged(snapshot, "unknown", "No encontré ese precio.");
     if (match.status === "ambiguous") {
       return unchanged(
         snapshot,
         "ambiguous",
         `¿${match.tiers.map((tier) => tier.label).join(" o ")}?`,
       );
+    }
+    if (match.status === "none" && command.labelQuery) {
+      const promoIds = new Set(
+        next.sections
+          .filter((section) => section.component === "promo")
+          .map((section) => section.id),
+      );
+      const promoMatch = matchItems(
+        itemsOf(next).filter((item) => promoIds.has(item.section_id)),
+        command.labelQuery,
+      );
+      if (promoMatch.status === "ambiguous") {
+        return unchanged(snapshot, "ambiguous", `¿${describeItems(promoMatch.items)}?`);
+      }
+      if (promoMatch.status === "one") {
+        let changed = false;
+        for (const section of next.sections) {
+          const item = section.items.find((entry) => entry.id === promoMatch.item.id);
+          if (!item) continue;
+          changed = item.price !== command.price;
+          item.price = command.price;
+        }
+        if (changed) next.revision += 1;
+        return {
+          snapshot: changed ? next : snapshot,
+          status: "applied",
+          reply: `${promoMatch.item.name} quedó en $${command.price.toFixed(2)}.`,
+          changed,
+        };
+      }
+    }
+    if (match.status !== "one") {
+      return unchanged(snapshot, "unknown", "No encontré ese precio.");
     }
     const tier = next.priceTiers.find((entry) => entry.id === match.tier.id);
     if (!tier) return unchanged(snapshot, "error", "No encontré ese precio.");
